@@ -21,3 +21,6 @@ erl_crash.dump
 
 
 .idea
+
+# localfile that sets up environment variables for dev
+start.sh

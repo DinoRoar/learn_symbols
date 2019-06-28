@@ -1,11 +1,11 @@
 defmodule UserProfileTest do
   use ExUnit.Case
 
-  alias UserProfile
+  alias LearnSymbols.UserProfile
 
   @moduletag :capture_log
 
-  doctest UserProfile
+  doctest LearnSymbols.UserProfile
 
   test "module exists" do
     assert is_list(UserProfile.module_info())

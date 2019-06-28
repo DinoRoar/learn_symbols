@@ -1,5 +1,8 @@
 defmodule LearnSymbolsWeb.Router do
+  @moduledoc false
   use LearnSymbolsWeb, :router
+
+  require Ueberauth
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -20,7 +23,16 @@ defmodule LearnSymbolsWeb.Router do
     get "/profile/:name/:code", ProfileController, :profile
 
 
-    get "/start/:name", LearnController, :start
+    get "/start", LearnController, :start
+    get "/logout", AuthController, :logout
+  end
+
+  scope "/auth", LearnSymbolsWeb do
+    pipe_through :browser
+
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+
   end
 
   # Other scopes may use custom stacks.

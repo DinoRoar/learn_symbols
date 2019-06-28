@@ -11,26 +11,53 @@ use Mix.Config
 
 # Configure Mix tasks and generators
 config :learn_symbols,
-  ecto_repos: [LearnSymbols.Repo]
+       ecto_repos: [LearnSymbols.Repo]
 
 config :learn_symbols_web,
-  ecto_repos: [LearnSymbols.Repo],
-  generators: [context_app: :learn_symbols]
+       ecto_repos: [LearnSymbols.Repo],
+       generators: [
+         context_app: :learn_symbols
+       ]
 
 # Configures the endpoint
-config :learn_symbols_web, LearnSymbolsWeb.Endpoint,
-  url: [host: "localhost"],
-  secret_key_base: "4R9fagvGhmck5P2gOeYCFDBRIzGf+WJTZBnC29G44eHF9/hjH4tCp1Xc+SyAKDht",
-  render_errors: [view: LearnSymbolsWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: LearnSymbolsWeb.PubSub, adapter: Phoenix.PubSub.PG2]
+config :learn_symbols_web,
+       LearnSymbolsWeb.Endpoint,
+       url: [
+         host: "localhost"
+       ],
+       secret_key_base: "4R9fagvGhmck5P2gOeYCFDBRIzGf+WJTZBnC29G44eHF9/hjH4tCp1Xc+SyAKDht",
+       render_errors: [
+         view: LearnSymbolsWeb.ErrorView,
+         accepts: ~w(html json)
+       ],
+       pubsub: [
+         name: LearnSymbolsWeb.PubSub,
+         adapter: Phoenix.PubSub.PG2
+       ]
 
 # Configures Elixir's Logger
-config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
+config :logger,
+       :console,
+       format: "$time $metadata[$level] $message\n",
+       metadata: [:request_id]
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+# Configures Ueberauth
+config :ueberauth,
+       Ueberauth,
+       providers: [
+         auth0: {Ueberauth.Strategy.Auth0, []},
+       ]
+
+# Configures Ueberauth's Auth0 auth provider
+config :ueberauth,
+       Ueberauth.Strategy.Auth0.OAuth,
+       domain: System.get_env("AUTH0_DOMAIN"),
+       client_id: System.get_env("AUTH0_CLIENT_ID"),
+       client_secret: System.get_env("AUTH0_CLIENT_SECRET")
+
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

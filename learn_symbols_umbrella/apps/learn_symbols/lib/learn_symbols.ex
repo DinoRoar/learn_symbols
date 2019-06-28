@@ -1,4 +1,7 @@
 defmodule LearnSymbols do
+
+  alias LearnSymbols.UserProfile
+
   @moduledoc """
   LearnSymbols keeps the contexts that define your domain
   and business logic.
@@ -8,7 +11,7 @@ defmodule LearnSymbols do
   """
 
 
-  def init_profile(name, code) do
-    {:ok, UserProfile.new(name, code)}
+  def init_profile(id, name) do
+    {:ok, UserProfile.new(id, name)}
   end
 end

@@ -1,8 +1,19 @@
 defmodule LearnSymbolsWeb.ProfileController do
   use LearnSymbolsWeb, :controller
 
-  def index(conn, _params) do
-    render(conn, "index.html")
+  plug :secure
+
+  defp secure(conn, _params) do
+    user = get_session(conn, :current_user)
+    case user do
+      nil ->
+        conn
+        |> redirect(to: "/auth/auth0")
+        |> halt
+      _ ->
+        conn
+        |> assign(:current_user, user)
+    end
   end
 
   def profile(conn, %{"name" => name, "code" => code}) do

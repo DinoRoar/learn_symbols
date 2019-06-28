@@ -24,7 +24,7 @@ defmodule LearnSymbolsWeb.MixProject do
   def application do
     [
       mod: {LearnSymbolsWeb.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :ueberauth_auth0]
     ]
   end
 
@@ -45,7 +45,9 @@ defmodule LearnSymbolsWeb.MixProject do
       {:gettext, "~> 0.11"},
       {:learn_symbols, in_umbrella: true},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:ueberauth_auth0, "~> 0.3"},
+      {:poison, "~> 3.1"}
     ]
   end
 
