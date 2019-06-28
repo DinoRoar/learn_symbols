@@ -1,0 +1,19 @@
+<section class="phx-hero">
+<h1>user profile</h1>
+
+
+</section>
+<section class="row">
+  <article class="column">
+    <div><%= @profile.name %></div>
+    <div>Symbols being learnt</div>
+    <ul>
+      <%= for symbol <- @profile.symbols do %>
+        <li>
+        <%= symbol %>
+        </li>
+      <% end %>
+    </ul>
+    <%= link "Start", to: Routes.learn_path(@conn, :start, @profile.name)   %>
+  </article>
+</section>
