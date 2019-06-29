@@ -18,6 +18,8 @@ and the number of correct guesses
     field :correct_answers, :integer
 
     belongs_to :user_profile, UserProfile
+
+    timestamps()
   end
 
   def new(symbol) do
