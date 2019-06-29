@@ -25,6 +25,7 @@ defmodule LearnSymbolsWeb.Router do
 
     get "/start", LearnController, :start
     get "/logout", AuthController, :logout
+    post "/answer", LearnController, :answer
   end
 
   scope "/auth", LearnSymbolsWeb do

@@ -17,11 +17,9 @@ defmodule LearnSymbolsWeb.ProfileController do
   end
 
   def profile(conn, %{"name" => name, "code" => code}) do
-    with {:ok, profile} <- LearnSymbols.init_profile(name, code)
-      do
-      render(conn, "profile.html", profile: profile)
-    else
-      err -> err
-    end
+    {:ok, profile} = LearnSymbols.init_profile(name, code)
+
+    render(conn, "profile.html", profile: profile)
+
   end
 end

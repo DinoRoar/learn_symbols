@@ -3,6 +3,7 @@ defmodule LearnSymbolsWeb.AuthController do
   plug Ueberauth
 
   alias Ueberauth.Strategy.Helpers
+  alias LearnSymbolsWeb.User
 
 
   @moduledoc """
@@ -23,7 +24,7 @@ defmodule LearnSymbolsWeb.AuthController do
   end
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
-    case UserFromAuth.find_or_create(auth) do
+    case User.find_or_create(auth) do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Successfully authenticated as " <> user.name <> ".")

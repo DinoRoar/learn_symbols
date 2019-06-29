@@ -20,11 +20,15 @@ defmodule LearnSymbolsWeb.LearnController do
   end
 
   def start(conn, _params) do
-
-    user = conn.assigns[:current_user]
-    Logger.debug(Poison.encode!(user))
-
-    render conn, "learn.html", current_user: user
+    with user <- conn.assigns[:current_user],
+         {:ok, symbol} <- LearnSymbols.get_next_symbol(user.id) do
+      render conn, "learn.html", symbol: symbol
+    else
+      err -> err
+    end
   end
 
+  def answer(conn, params) do
+    Logger.debug(Poison.encode!(params))
+  end
 end

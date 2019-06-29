@@ -1,4 +1,11 @@
 <section class="phx-hero">
+  <h1>Say what you See!</h1>
+</section>
 
+<section >
+  <article class="say-what-you-see"><%= @symbol %></article>
+  <article class="answers">
+    <h2>Did you get it right?</h2>
+  </article>
 
 </section>

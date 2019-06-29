@@ -1,4 +1,4 @@
-defmodule UserFromAuth do
+defmodule LearnSymbolsWeb.User do
   @moduledoc """
   Retrieve the user information from an auth request
   """
@@ -6,6 +6,13 @@ defmodule UserFromAuth do
   require Poison
 
   alias Ueberauth.Auth
+  alias LearnSymbols.UserProfile
+  alias LearnSymbolsWeb.BasicAuth
+
+  alias __MODULE__
+
+  @enforce_keys [:id, :name, :avatar]
+  defstruct [:id, :name, :avatar]
 
   def find_or_create(%Auth{provider: :identity} = auth) do
     case validate_pass(auth.credentials) do
@@ -16,15 +23,14 @@ defmodule UserFromAuth do
   end
 
   def find_or_create(%Auth{} = auth) do
-    info = basic_info(auth)
-    case LearnSymbols.create_user_if_new(info) do
+     info  = basic_info(auth)
+     %User{id: id, name: name} = info
+    case LearnSymbols.create_user_if_new(id, name) do
       :ok -> {:ok, info}
       err -> err
     end
     {:ok, basic_info(auth)}
   end
-
-  def create_user_if_new()
 
   # github does it this way
   defp avatar_from_auth(
@@ -54,7 +60,7 @@ defmodule UserFromAuth do
   end
 
   defp basic_info(auth) do
-    %{id: auth.uid, name: name_from_auth(auth), avatar: avatar_from_auth(auth)}
+    %User{id: auth.uid, name: name_from_auth(auth), avatar: avatar_from_auth(auth)}
   end
 
   defp name_from_auth(auth) do

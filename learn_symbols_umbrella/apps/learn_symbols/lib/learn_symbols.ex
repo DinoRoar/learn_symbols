@@ -11,7 +11,15 @@ defmodule LearnSymbols do
   """
 
 
-  def init_profile(id, name) do
+  def create_user_if_new(id, name) do
     {:ok, UserProfile.new(id, name)}
+  end
+
+  def get_next_symbol(user_id) do
+    {:ok, "1"}
+  end
+
+  def answer(user, symbol, result) do
+    :ok
   end
 end
