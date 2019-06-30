@@ -10,6 +10,12 @@ defmodule LearnSymbols do
   if it comes from the database, an external API or others.
   """
 
+  def get_user_profile(id) do
+    case UserProfile.get(id) do
+      nil -> {:err, :user_not_found}
+      user -> {:ok, user}
+    end
+  end
 
   def create_user_if_new(id, name) do
     UserProfile.new(id, name)

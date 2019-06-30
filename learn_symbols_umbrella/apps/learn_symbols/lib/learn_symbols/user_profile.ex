@@ -27,10 +27,16 @@ defmodule LearnSymbols.UserProfile do
 
   def new(provider_id, name) do
     Logger.debug "creatign new"
-    case Repo.get_by(UserProfile, provider_id: provider_id) do
+    case get(provider_id) do
       nil -> create_user_with_symbols(provider_id, name, @default_symbols)
       user = %UserProfile{} -> {:ok, user}
     end
+  end
+
+  def get(provider_id) do
+    UserProfile
+    |> Repo.get_by(provider_id: provider_id)
+    |> Repo.preload([:symbols])
   end
 
   defp create_user_with_symbols(provider_id, name, symbols) do

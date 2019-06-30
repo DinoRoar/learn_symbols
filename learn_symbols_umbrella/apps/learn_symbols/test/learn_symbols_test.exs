@@ -11,6 +11,15 @@ defmodule LearnSymbolsTest do
     assert is_list(LearnSymbols.module_info())
   end
 
+  test "create and get a user should be equivalent" do
+    {:ok, profile} = LearnSymbols.create_user_if_new("123", "john")
+    {:ok, another_profile} = LearnSymbols.get_user_profile("123")
+  assert profile.name == another_profile.name
+  assert Enum.count(another_profile.symbols) == 10
+  assert profile.symbols == another_profile.symbols
+
+  end
+
   test "returns user profile for existing user" do
     {:ok, profile} = LearnSymbols.create_user_if_new("123", "john")
     assert profile.name == "john"
@@ -23,17 +32,14 @@ defmodule LearnSymbolsTest do
   end
 
   test "given a user id will return a symbol" do
-    {:ok, profile} = LearnSymbols.create_user_if_new("123", "john")
+    {:ok, _profile} = LearnSymbols.create_user_if_new("123", "john")
     {:ok, symbol} = LearnSymbols.get_next_symbol("123")
-
     assert symbol == "1"
   end
 
-
   test "when answering increment correct guesses if right" do
-    {:ok, profile} = LearnSymbols.create_user_if_new("123", "john")
-    {:ok, symbol} = LearnSymbols.get_next_symbol("123")
+    {:ok, _profile} = LearnSymbols.create_user_if_new("123", "john")
+    {:ok, _symbol} = LearnSymbols.get_next_symbol("123")
     assert LearnSymbols.answer("123", "1", :yes) == :ok
-
   end
 end
