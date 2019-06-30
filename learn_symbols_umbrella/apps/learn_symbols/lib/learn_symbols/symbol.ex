@@ -7,14 +7,14 @@ defmodule LearnSymbols.Symbol do
 
 
   @moduledoc """
-  A symbol a user is trying to learn,
-the next time it should be shown
-and the number of correct guesses
-"""
+    A symbol a user is trying to learn,
+  the next time it should be shown
+  and the number of correct guesses
+  """
 
   schema "symbols" do
     field :symbol, :string
-    field :next_show, :date
+    field :next_show, :utc_datetime
     field :correct_answers, :integer
 
     belongs_to :user_profile, UserProfile
@@ -22,9 +22,7 @@ and the number of correct guesses
     timestamps()
   end
 
-  def new(symbol) do
-    %Symbol{symbol: symbol, next_show: DateTime.utc_now, correct_answers: 0}
+  def new(symbol, user_profile) do
+    %Symbol{symbol: symbol, next_show: DateTime.truncate(DateTime.utc_now, :second), correct_answers: 0, user_profile: user_profile}
   end
-
-
 end

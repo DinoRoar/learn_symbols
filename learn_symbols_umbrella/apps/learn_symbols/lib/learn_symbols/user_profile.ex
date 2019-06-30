@@ -9,6 +9,10 @@ defmodule LearnSymbols.UserProfile do
 
   alias __MODULE__
   alias LearnSymbols.Symbol
+  alias LearnSymbols.Repo
+
+  require Logger
+  require Poison
 
   schema "user_profiles" do
     field :provider_id, :string
@@ -19,10 +23,30 @@ defmodule LearnSymbols.UserProfile do
     timestamps()
   end
 
-
   @default_symbols ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
   def new(provider_id, name) do
-    %UserProfile{provider_id: provider_id, name: name, symbols: Enum.map(@default_symbols, fn s -> Symbol.new(s) end)}
+    Logger.debug "creatign new"
+    case Repo.get_by(UserProfile, provider_id: provider_id) do
+      nil -> create_user_with_symbols(provider_id, name, @default_symbols)
+      user = %UserProfile{} -> {:ok, user}
+    end
+  end
+
+  defp create_user_with_symbols(provider_id, name, symbols) do
+    with {:ok, user} <- Repo.insert(%UserProfile{provider_id: provider_id, name: name}) do
+      symbols
+      |> Enum.map(fn s -> Symbol.new(s, user) end)
+      |> Enum.each(
+           fn s ->
+             symbol = Ecto.build_assoc(user, :symbols, s)
+             Repo.insert(symbol)
+           end
+         )
+
+      {:ok, Repo.preload(user, [:symbols])}
+    else
+      err -> err
+    end
   end
 end

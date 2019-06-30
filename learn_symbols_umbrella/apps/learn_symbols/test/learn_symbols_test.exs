@@ -1,5 +1,5 @@
 defmodule LearnSymbolsTest do
-  use ExUnit.Case
+  use LearnSymbols.DataCase
 
   alias LearnSymbols
 
@@ -19,7 +19,7 @@ defmodule LearnSymbolsTest do
 
   test "by default symbols are 1 to 10" do
     {:ok, profile} = LearnSymbols.create_user_if_new("123", "john")
-    assert Enum.map(profile.symbols, fn s -> s.symbol end) == ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    assert Enum.map(profile.symbols, fn s -> s.symbol end) == ["1", "10", "2", "3", "4", "5", "6", "7", "8", "9"]
   end
 
   test "given a user id will return a symbol" do

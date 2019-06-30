@@ -12,7 +12,7 @@ defmodule LearnSymbols do
 
 
   def create_user_if_new(id, name) do
-    {:ok, UserProfile.new(id, name)}
+    UserProfile.new(id, name)
   end
 
   def get_next_symbol(user_id) do
