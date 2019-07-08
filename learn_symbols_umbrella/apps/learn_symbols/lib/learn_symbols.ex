@@ -1,6 +1,8 @@
 defmodule LearnSymbols do
 
   alias LearnSymbols.UserProfile
+  alias LearnSymbols.SymbolQuiz
+  alias LearnSymbols.Symbol
 
   @moduledoc """
   LearnSymbols keeps the contexts that define your domain
@@ -21,11 +23,12 @@ defmodule LearnSymbols do
     UserProfile.new(id, name)
   end
 
-  def get_next_symbol(user_id) do
-    {:ok, "1"}
+  def get_symbol(user_id) do
+    user = UserProfile.get(user_id)
+    SymbolQuiz.get_symbol(user.symbols, DateTime.utc_now)
   end
 
-  def answer(user, symbol, result) do
-    :ok
+  def answer(user_id, symbol_id, answer) do
+    SymbolQuiz.answer(user_id, symbol_id, answer)
   end
 end

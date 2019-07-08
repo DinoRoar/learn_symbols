@@ -25,4 +25,6 @@ defmodule LearnSymbols.Symbol do
   def new(symbol, user_profile) do
     %Symbol{symbol: symbol, next_show: DateTime.truncate(DateTime.utc_now, :second), correct_answers: 0, user_profile: user_profile}
   end
+
+
 end

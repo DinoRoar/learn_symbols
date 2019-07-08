@@ -21,7 +21,7 @@ defmodule LearnSymbolsWeb.LearnController do
 
   def start(conn, _params) do
     with user <- conn.assigns[:current_user],
-         {:ok, symbol} <- LearnSymbols.get_next_symbol(user.id) do
+         {:ok, symbol} <- LearnSymbols.get_symbol(user.id) do
       render conn, "learn.html", symbol: symbol
     else
       err -> err

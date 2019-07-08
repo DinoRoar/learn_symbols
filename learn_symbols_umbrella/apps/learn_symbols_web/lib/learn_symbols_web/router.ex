@@ -20,7 +20,7 @@ defmodule LearnSymbolsWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    get "/profile/:name/:code", ProfileController, :profile
+    get "/profile", ProfileController, :profile
 
 
     get "/start", LearnController, :start
