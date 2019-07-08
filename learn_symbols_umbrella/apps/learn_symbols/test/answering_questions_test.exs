@@ -23,7 +23,6 @@ defmodule AnsweringQuestionsTest do
 
   test "when answering increment correct guesses if right" do
     {:ok, symbol} = LearnSymbols.get_symbol(@user_id)
-    Logger.info Poison.encode!(symbol)
     assert symbol.correct_answers == 0
     last_time = symbol.next_show
     {:ok, answered} = LearnSymbols.answer(@user_id, symbol.id, :yes)
@@ -36,5 +35,12 @@ defmodule AnsweringQuestionsTest do
     symbol2 = LearnSymbols.get_symbol(@user_id)
 
     assert symbol1 == symbol2
+  end
+
+  test "ask for a symbol, answer it and ask for a symbol should return a different symbol" do
+    {:ok, symbol1} = LearnSymbols.get_symbol(@user_id)
+    {:ok, _answered} = LearnSymbols.answer(@user_id, symbol1.id, :yes)
+    {:ok, symbol2} = LearnSymbols.get_symbol(@user_id)
+    assert symbol1.id != symbol2.id
   end
 end

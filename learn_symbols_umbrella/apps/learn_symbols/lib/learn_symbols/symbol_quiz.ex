@@ -55,14 +55,12 @@ defmodule LearnSymbols.SymbolQuiz do
   defp choose_symbol(symbols, current_datetime) do
     symbol = symbols
              |> Enum.map(fn s -> %{score: score_symbol(s, current_datetime), symbol: s} end)
-             |> Enum.sort(&(&1.score >= &2.score))
-
+             |> Enum.sort(&(&1.score <= &2.score))
 
     hd(symbol).symbol
   end
 
   defp score_symbol(symbol, current_datetime) do
-    diff = DateTime.diff(symbol.next_show, current_datetime)
-    diff
+    DateTime.diff(symbol.next_show, current_datetime, :second)
   end
 end
