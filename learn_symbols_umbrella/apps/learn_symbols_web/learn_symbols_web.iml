@@ -54,5 +54,6 @@
     <orderEntry type="library" name="exjsx" level="project" />
     <orderEntry type="library" name="json" level="project" />
     <orderEntry type="library" name="jazz" level="project" />
+    <orderEntry type="library" name="phoenix_live_view" level="project" />
   </component>
 </module>

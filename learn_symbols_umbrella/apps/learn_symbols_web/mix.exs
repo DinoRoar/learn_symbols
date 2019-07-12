@@ -47,7 +47,8 @@ defmodule LearnSymbolsWeb.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:ueberauth_auth0, "~> 0.3"},
-      {:poison, "~> 3.1"}
+      {:poison, "~> 3.1"},
+      {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"}
     ]
   end
 

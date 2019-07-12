@@ -22,13 +22,24 @@ defmodule LearnSymbolsWeb.LearnController do
   def start(conn, _params) do
     with user <- conn.assigns[:current_user],
          {:ok, symbol} <- LearnSymbols.get_symbol(user.id) do
-      render conn, "learn.html", symbol: symbol
+      render conn, "learn.html", %{symbol: symbol.symbol, symbol_id: symbol.id}
     else
       err -> err
     end
   end
 
-  def answer(conn, params) do
-    Logger.debug(Poison.encode!(params))
+  def answer(conn, %{"answer" => answer, "symbol_id" => symbol_id}) do
+    user = conn.assigns[:current_user]
+    answer_atom = case answer do
+      "yes" -> :yes
+      _ -> :no
+    end
+
+    with {:ok, _} <- LearnSymbols.answer(user.id, symbol_id, answer_atom),
+         {:ok, symbol} = LearnSymbols.get_symbol(user.id)do
+      render conn, "learn.html", %{symbol: symbol.symbol, symbol_id: symbol.id}
+      else
+      err -> err
+    end
   end
 end

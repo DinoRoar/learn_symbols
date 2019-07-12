@@ -33,7 +33,11 @@ config :learn_symbols_web,
        pubsub: [
          name: LearnSymbolsWeb.PubSub,
          adapter: Phoenix.PubSub.PG2
+       ],
+       live_view: [
+         signing_salt: "bRraLWt1sz8g1FKUgpiZhQQCxfnleQ4p3Z5NwCmSpIzmnJgAtlKRpiOd7uhRMhAe"
        ]
+
 
 # Configures Elixir's Logger
 config :logger,
@@ -43,6 +47,10 @@ config :logger,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+# setup leex templates to work
+config :phoenix,
+       template_engines: [leex: Phoenix.LiveView.Engine]
 
 # Configures Ueberauth
 config :ueberauth,
@@ -57,6 +65,7 @@ config :ueberauth,
        domain: System.get_env("AUTH0_DOMAIN"),
        client_id: System.get_env("AUTH0_CLIENT_ID"),
        client_secret: System.get_env("AUTH0_CLIENT_SECRET")
+
 
 
 # Import environment specific config. This must remain at the bottom

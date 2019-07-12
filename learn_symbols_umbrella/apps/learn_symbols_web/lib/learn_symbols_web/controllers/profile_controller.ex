@@ -17,7 +17,7 @@ defmodule LearnSymbolsWeb.ProfileController do
   end
 
   def profile(conn, %{"name" => name, "code" => code}) do
-    {:ok, profile} = LearnSymbols.init_profile(name, code)
+    {:ok, profile} = LearnSymbols.create_user_if_new(name, code)
 
     render(conn, "profile.html", profile: profile)
 

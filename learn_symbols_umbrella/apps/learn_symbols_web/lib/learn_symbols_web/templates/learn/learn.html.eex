@@ -6,6 +6,9 @@
   <article class="say-what-you-see"><%= @symbol %></article>
   <article class="answers">
     <h2>Did you get it right?</h2>
+
+    <%= button "Yes",  to: Routes.learn_path(@conn, :answer, %{symbol_id: @symbol_id, answer: :yes}), method: "post" %>
+    <%= button "No",  to: Routes.learn_path(@conn, :answer, %{symbol_id: @symbol_id, answer: :no}), method: "post" %>
   </article>
 
 </section>
