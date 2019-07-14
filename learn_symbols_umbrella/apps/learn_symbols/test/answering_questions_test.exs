@@ -43,4 +43,10 @@ defmodule AnsweringQuestionsTest do
     {:ok, symbol2} = LearnSymbols.get_symbol(@user_id)
     assert symbol1.id != symbol2.id
   end
+
+  test "ask for a symbol, answer it wrong and its next date should be 30 seconds into the future" do
+    {:ok, symbol} = LearnSymbols.get_symbol(@user_id)
+    {:ok, answered} = LearnSymbols.answer(@user_id, symbol.id, :no)
+    assert answered.next_show == DateTime.add(symbol.next_show, 30)
+  end
 end

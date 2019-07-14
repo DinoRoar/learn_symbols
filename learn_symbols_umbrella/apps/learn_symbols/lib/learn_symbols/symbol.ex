@@ -4,6 +4,7 @@ defmodule LearnSymbols.Symbol do
 
   alias __MODULE__
   alias LearnSymbols.UserProfile
+  alias LearnSymbols.Repo
 
 
   @moduledoc """
@@ -23,8 +24,17 @@ defmodule LearnSymbols.Symbol do
   end
 
   def new(symbol, user_profile) do
-    %Symbol{symbol: symbol, next_show: DateTime.truncate(DateTime.utc_now, :second), correct_answers: 0, user_profile: user_profile}
+    %Symbol{
+      symbol: symbol,
+      next_show: DateTime.truncate(DateTime.utc_now, :second),
+      correct_answers: 0,
+      user_profile: user_profile
+    }
   end
 
-
+  def get_with_profile(symbol_id, user_id) do
+    Symbol
+    |> Repo.get!(symbol_id)
+    |> Repo.preload(:user_profile)
+  end
 end

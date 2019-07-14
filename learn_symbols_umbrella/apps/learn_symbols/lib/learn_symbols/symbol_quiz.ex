@@ -17,29 +17,46 @@ defmodule LearnSymbols.SymbolQuiz do
     end
   end
 
-  def answer(user_id, symbol_id, :yes) do
-    persisted_symbol = Symbol
-                       |> Repo.get!(symbol_id)
-                       |> Repo.preload(:user_profile)
 
-    if (persisted_symbol.user_profile.provider_id == user_id) do
+  def answer(user_id, symbol_id, :yes) do
+    with persisted_symbol <- Symbol.get_with_profile(symbol_id, user_id),
+         {:ok, _} <- check_symbol_belongs_to_user(persisted_symbol, user_id) do
       persisted_symbol
-      |> increment_correct_answers
-      |> set_next_show(DateTime.add(persisted_symbol.next_show, 60 * 60))
+      |> Ecto.Changeset.change(
+           %{
+             correct_answers: persisted_symbol.correct_answers + 1,
+             next_show: DateTime.add(persisted_symbol.next_show, 60 * 60)
+           }
+         )
       |> Repo.update()
+    else
+      err -> err
+    end
+  end
+
+  def answer(user_id, symbol_id, :no) do
+    with persisted_symbol <- Symbol.get_with_profile(symbol_id, user_id),
+         {:ok, _} <- check_symbol_belongs_to_user(persisted_symbol, user_id) do
+      persisted_symbol
+      |> Ecto.Changeset.change(
+           %{
+             correct_answers: persisted_symbol.correct_answers + 1,
+             next_show: DateTime.add(persisted_symbol.next_show, 30)
+           }
+         )
+      |> Repo.update()
+    else
+      err -> err
+    end
+  end
+
+  defp check_symbol_belongs_to_user(symbol, user_id) do
+    if (symbol.user_profile.provider_id == user_id) do
+      {:ok, symbol}
     else
       {:err, :symbol_does_not_belong_to_given_user}
     end
   end
-
-  defp increment_correct_answers(symbol = %Symbol{}) do
-    Ecto.Changeset.change(symbol, %{correct_answers: symbol.correct_answers + 1})
-  end
-
-  defp set_next_show(symbol_changeset, next_show) do
-    Ecto.Changeset.put_change(symbol_changeset, :next_show, next_show )
-  end
-
 
   defp are_all_symbols(symbols) do
     Enum.all?(
