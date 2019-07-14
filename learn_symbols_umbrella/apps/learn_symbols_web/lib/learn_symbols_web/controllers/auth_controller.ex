@@ -5,6 +5,8 @@ defmodule LearnSymbolsWeb.AuthController do
   alias Ueberauth.Strategy.Helpers
   alias LearnSymbolsWeb.User
 
+  require Logger
+
 
   @moduledoc """
     Handles Auth0 authentication and callbacks
@@ -24,6 +26,7 @@ defmodule LearnSymbolsWeb.AuthController do
   end
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
+    Logger.debug "in auth callback"
     case User.find_or_create(auth) do
       {:ok, user} ->
         conn

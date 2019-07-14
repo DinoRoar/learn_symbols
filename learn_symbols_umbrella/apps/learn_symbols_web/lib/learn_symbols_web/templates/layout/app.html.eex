@@ -15,14 +15,15 @@
             <li><a href="/">Home</a></li>
             <%= if @current_user do %>
               <li><a href="/start">Start</a></li>
+              <li><a href="/profile">Profile / Setup</a></li>
               <li class="active"><a href="/logout">Logout</a></li>
             <% else %>
               <li><a href="/auth/auth0">Login</a></li>
             <% end %>
           </ul>
         </nav>
-        <a href="http://phoenixframework.org/" class="phx-logo">
-          <img src="<%= Routes.static_path(@conn, "/images/phoenix.png") %>" alt="Phoenix Framework Logo"/>
+        <a href="https://dinoroar.io/" class="phx-logo">
+          <img src="https://storage.googleapis.com/www.dinoroar.io/twitter-header.png" alt="DinoRoar Logo"/>
         </a>
       </section>
     </header>

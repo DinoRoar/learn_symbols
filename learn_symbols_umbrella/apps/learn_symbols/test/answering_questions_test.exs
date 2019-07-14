@@ -49,4 +49,20 @@ defmodule AnsweringQuestionsTest do
     {:ok, answered} = LearnSymbols.answer(@user_id, symbol.id, :no)
     assert answered.next_show == DateTime.add(symbol.next_show, 30)
   end
+
+  test "ask for a symbol, answer it wrong we should get a new symbol" do
+    {:ok, symbol1} = LearnSymbols.get_symbol(@user_id)
+    {:ok, _answered} = LearnSymbols.answer(@user_id, symbol1.id, :no)
+    {:ok, symbol2} = LearnSymbols.get_symbol(@user_id)
+    assert symbol1.id != symbol2.id
+  end
+
+
+  describe "when the user has one symbol" do
+    setup [:user_with_one_symbol]
+  end
+
+  defp user_with_one_symbol(context) do
+    {:ok, context}
+  end
 end

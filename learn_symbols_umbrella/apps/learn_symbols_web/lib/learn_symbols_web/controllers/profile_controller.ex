@@ -1,5 +1,6 @@
 defmodule LearnSymbolsWeb.ProfileController do
   use LearnSymbolsWeb, :controller
+  alias LearnSymbols
 
   plug :secure
 
@@ -16,10 +17,12 @@ defmodule LearnSymbolsWeb.ProfileController do
     end
   end
 
-  def profile(conn, %{"name" => name, "code" => code}) do
-    {:ok, profile} = LearnSymbols.create_user_if_new(name, code)
-
-    render(conn, "profile.html", profile: profile)
-
+  def profile(conn, %{}) do
+    with user <- conn.assigns[:current_user],
+         {:ok, profile} <- LearnSymbols.get_user_profile(user.id) do
+      render(conn, "profile.html", profile: %{})
+    else
+      err -> err
+    end
   end
 end

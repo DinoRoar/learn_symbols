@@ -23,11 +23,9 @@ defmodule LearnSymbols.UserProfile do
     timestamps()
   end
 
-  @default_symbols ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-
-  def new(provider_id, name) do
+  def new(provider_id, name, symbols) do
     case get(provider_id) do
-      nil -> create_user_with_symbols(provider_id, name, @default_symbols)
+      nil -> create_user_with_symbols(provider_id, name, symbols)
       user = %UserProfile{} -> {:ok, user}
     end
   end
