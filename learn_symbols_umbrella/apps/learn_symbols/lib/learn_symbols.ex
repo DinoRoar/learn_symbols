@@ -36,7 +36,12 @@ defmodule LearnSymbols do
   end
 
   defp symbol_to_map(symbol) do
-    %{id: symbol.id, symbol: symbol.symbol, next_show: symbol.next_show, correct_answers: symbol.correct_answers}
+    %{
+      id: symbol.id,
+      symbol: symbol.symbol,
+      next_show: symbol.next_show,
+      correct_answers: symbol.correct_answers
+    }
   end
 
   def create_user_if_new(user_provider_id, name, symbols \\ @default_symbols) do
@@ -48,8 +53,11 @@ defmodule LearnSymbols do
   end
 
   def get_symbol(user_provider_id) do
-    user = UserProfile.get(user_provider_id)
-    SymbolQuiz.get_symbol(user.symbols, DateTime.utc_now)
+    case  UserProfile.get(user_provider_id) do
+      nil -> {:err, :user_not_found}
+      {:err, error} -> {:err, error}
+      user -> SymbolQuiz.get_symbol(user.symbols, DateTime.utc_now)
+    end
   end
 
   def answer(user_provider_id, symbol_id, answer) do

@@ -21,6 +21,11 @@ defmodule AnsweringQuestionsTest do
     assert symbol.symbol == "1"
   end
 
+  test "given a user id that does not exist will return an error" do
+    {:err, error} = LearnSymbols.get_symbol("nonExistent")
+    assert error != nil
+  end
+
   test "when answering increment correct guesses if right" do
     {:ok, symbol} = LearnSymbols.get_symbol(@user_id)
     assert symbol.correct_answers == 0

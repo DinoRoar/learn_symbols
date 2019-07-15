@@ -31,9 +31,12 @@ defmodule LearnSymbols.UserProfile do
   end
 
   def get(provider_id) do
-    UserProfile
-    |> Repo.get_by(provider_id: provider_id)
-    |> Repo.preload([:symbols])
+    result = UserProfile
+             |> Repo.get_by(provider_id: provider_id)
+             |> Repo.preload([:symbols])
+
+    Logger.debug Poison.encode!(result)
+    result
   end
 
   defp create_user_with_symbols(provider_id, name, symbols) do
