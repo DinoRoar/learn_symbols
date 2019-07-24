@@ -72,6 +72,5 @@ defmodule LearnSymbols do
 
   def remove_symbol_from_user(user_provider_id, symbol_id) do
   UserProfile.remove_symbol_from_user(user_provider_id, symbol_id)
-
   end
 end

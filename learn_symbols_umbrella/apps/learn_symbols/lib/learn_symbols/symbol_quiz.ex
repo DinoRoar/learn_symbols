@@ -1,6 +1,6 @@
 defmodule LearnSymbols.SymbolQuiz do
   @moduledoc """
-    Looks after choosing symbols and what to do with right or wrong answers
+    Looks after choosing symbols and what to do with right or wrong answers, has get_symbol/2 and answer/3 functions
   """
 
   require Logger
@@ -9,6 +9,7 @@ defmodule LearnSymbols.SymbolQuiz do
   alias LearnSymbols.Symbol
   alias LearnSymbols.Repo
 
+
   def get_symbol(symbols, current_datetime) do
     if are_all_symbols(symbols) do
       {:ok, choose_symbol(symbols, current_datetime)}
@@ -16,6 +17,29 @@ defmodule LearnSymbols.SymbolQuiz do
       {:err, :not_all_symbols_are_symbols}
     end
   end
+
+  defp are_all_symbols(symbols) do
+    Enum.all?(
+      symbols,
+      fn
+        %Symbol{} -> true
+        _ -> false
+      end
+    )
+  end
+
+  defp choose_symbol(symbols, current_datetime) do
+    symbol = symbols
+             |> Enum.map(fn s -> %{score: score_symbol(s, current_datetime), symbol: s} end)
+             |> Enum.sort(&(&1.score <= &2.score))
+
+    hd(symbol).symbol
+  end
+
+  defp score_symbol(symbol, current_datetime) do
+    DateTime.diff(symbol.next_show, current_datetime, :second)
+  end
+
 
 
   def answer(user_id, symbol_id, :yes) do
@@ -63,28 +87,5 @@ defmodule LearnSymbols.SymbolQuiz do
     else
       {:err, :symbol_does_not_belong_to_given_user}
     end
-  end
-
-  defp are_all_symbols(symbols) do
-    Enum.all?(
-      symbols,
-      fn
-        %Symbol{} -> true
-        _ -> false
-      end
-    )
-  end
-
-
-  defp choose_symbol(symbols, current_datetime) do
-    symbol = symbols
-             |> Enum.map(fn s -> %{score: score_symbol(s, current_datetime), symbol: s} end)
-             |> Enum.sort(&(&1.score <= &2.score))
-
-    hd(symbol).symbol
-  end
-
-  defp score_symbol(symbol, current_datetime) do
-    DateTime.diff(symbol.next_show, current_datetime, :second)
   end
 end
