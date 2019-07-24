@@ -1,0 +1,33 @@
+<section >
+  <article class="answers">
+    <h2>Symbols</h2>
+
+<div class="container">
+    <%= for symbol <- @symbols do %>
+
+    <div class="row">
+      <div class="column"><%= symbol.symbol %></div>
+      <div class="column"><%= DateTime.to_string( symbol.next_show) %></div>
+      <div class="column">
+        <button phx-click="delete-symbol" phx-value="<%= symbol.id %>">Delete Symbol</button>
+      </div>
+    </div>
+    <% end %>
+    <div class="row">
+    <%= f = form_for LearnSymbolsWeb.CreateSymbol.changeset(%LearnSymbolsWeb.CreateSymbol{}) , "#", [phx_change: :validate, phx_submit: :create] %>
+      <%= label f, :symbol %>
+      <%= text_input f, :symbol %>
+      <%= error_tag f, :symbol %>
+
+      <div>
+        <%= submit "Create", phx_disable_with: "Creating..." %>
+      </div>
+    </form>
+
+
+    </div>
+</div>
+
+  </article>
+
+</section>

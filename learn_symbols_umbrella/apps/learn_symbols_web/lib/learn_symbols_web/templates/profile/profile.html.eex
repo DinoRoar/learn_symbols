@@ -7,13 +7,7 @@
   <article class="column">
     <div><%= @profile.name %></div>
     <div>Symbols being learnt</div>
-    <ul>
-      <%= for symbol <- @profile.symbols do %>
-        <li>
-        <%= symbol %>
-        </li>
-      <% end %>
-    </ul>
-    <%= link "Start", to: Routes.learn_path(@conn, :start, @profile.name)   %>
+      <%= Phoenix.LiveView.live_render(@conn, LearnSymbolsWeb.ProfileSymbolsLiveView, session: %{user_id: @profile.id, symbols: @profile.symbols}) %>
+    <%= link "Start", to: Routes.learn_path(@conn, :start, %{id: @profile.id})   %>
   </article>
 </section>

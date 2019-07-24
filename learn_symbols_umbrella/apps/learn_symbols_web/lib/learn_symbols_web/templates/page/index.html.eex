@@ -9,7 +9,8 @@
     <p>A letter will be shown, you try to say the letter. Hit the button and listen to it being said back to you.</p>
     <p>If you got it right choose if it was easy or hard or if you got it wrong choose wrong</p>
     <p>The letters you get wrong will show more often</p>
-    <%= button "Start",  to: Routes.learn_path(@conn, :start, %{}), method: "get" %>
+
+    <%= button "Start",  to: Routes.learn_path(@conn, :start, %{dave: ""}), method: "get" %>
   </article>
 </section>
 

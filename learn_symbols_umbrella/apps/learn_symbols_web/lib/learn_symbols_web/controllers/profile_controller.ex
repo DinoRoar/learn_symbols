@@ -17,10 +17,10 @@ defmodule LearnSymbolsWeb.ProfileController do
     end
   end
 
-  def profile(conn, %{}) do
+  def profile(conn, _params) do
     with user <- conn.assigns[:current_user],
          {:ok, profile} <- LearnSymbols.get_user_profile(user.id) do
-      render(conn, "profile.html", profile: %{})
+      render conn, "profile.html", %{profile: profile}
     else
       err -> err
     end

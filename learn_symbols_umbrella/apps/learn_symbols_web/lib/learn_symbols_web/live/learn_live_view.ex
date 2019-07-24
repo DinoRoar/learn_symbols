@@ -3,17 +3,20 @@ defmodule LearnSymbolsWeb.LearnLiveView do
 
   alias LearnSymbols
 
+  require Logger
+  require Poison
+
   @moduledoc false
 
 
   def render(assigns) do
-    LearnSymbolsWeb.PageView.render("learn.html", assigns)
+    Phoenix.View.render(LearnSymbolsWeb.PageView, "learn_live.html", assigns)
   end
 
-  def mount(_session, socket) do
-    {:ok, _symbol} = LearnSymbols.get_symbol("123")
-    {:ok, assign(socket, deploy_step: "Ready!")}
+  def mount(%{user_id: user_id, symbols: symbols}, socket) do
+    {:ok, assign(socket, user_id: user_id, symbols: symbols)}
   end
 
 
 end
+

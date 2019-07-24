@@ -1,0 +1,4 @@
+<div>
+  <%= @symbol %>
+  <%= button "Remove",  to: Routes.learn_path(@conn, :start, %{dave: ""}), method: "post" %>
+</div>
