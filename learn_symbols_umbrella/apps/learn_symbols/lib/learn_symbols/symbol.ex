@@ -6,6 +6,7 @@ defmodule LearnSymbols.Symbol do
   alias LearnSymbols.UserProfile
   alias LearnSymbols.Repo
 
+  require Logger
 
   @moduledoc """
     A symbol a user is trying to learn,
@@ -23,6 +24,9 @@ defmodule LearnSymbols.Symbol do
     timestamps()
   end
 
+  @doc """
+  Returns a new Symbol
+  """
   def new(symbol, user_profile) do
     %Symbol{
       symbol: symbol,
@@ -32,9 +36,30 @@ defmodule LearnSymbols.Symbol do
     }
   end
 
-  def get_with_profile(symbol_id, user_id) do
-    Symbol
-    |> Repo.get!(symbol_id)
-    |> Repo.preload(:user_profile)
+  @doc """
+  gets a symbol preloaded with user profile
+  """
+  def get_with_profile(symbol_id) do
+     with {:ok, symbol} <- get_by_id(symbol_id) do
+       {:ok, symbol |> Repo.preload(:user_profile)}
+       else
+       err -> err
+     end
+
+  end
+
+  def get_by_id(symbol_id) do
+    case Symbol
+         |> Repo.get(symbol_id) do
+      nil -> {:err, :symbol_does_not_exist}
+      symbol -> {:ok, symbol}
+    end
+
+  end
+
+  def delete(symbol) do
+    Logger.debug "deleting symbol #{symbol.id}"
+    Repo.delete symbol
+    Logger.debug "deleted symbol #{symbol.id}"
   end
 end

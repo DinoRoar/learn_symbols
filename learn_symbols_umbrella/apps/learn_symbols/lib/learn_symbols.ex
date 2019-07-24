@@ -4,6 +4,8 @@ defmodule LearnSymbols do
   alias LearnSymbols.SymbolQuiz
   alias LearnSymbols.Symbol
 
+  require Logger
+
   @moduledoc """
   LearnSymbols keeps the contexts that define your domain
   and business logic.
@@ -44,7 +46,7 @@ defmodule LearnSymbols do
     }
   end
 
-  def create_user_if_new(user_provider_id, name, symbols \\ @default_symbols) do
+    def create_user_if_new(user_provider_id, name, symbols \\ @default_symbols) do
     with {:ok, user} <- UserProfile.new(user_provider_id, name, symbols) do
       {:ok, user_to_map(user)}
     else
@@ -62,5 +64,14 @@ defmodule LearnSymbols do
 
   def answer(user_provider_id, symbol_id, answer) do
     SymbolQuiz.answer(user_provider_id, symbol_id, answer)
+  end
+
+  def add_symbol_to_user(user_provider_id, symbol) do
+    UserProfile.add_symbol_to_user(user_provider_id, symbol)
+  end
+
+  def remove_symbol_from_user(user_provider_id, symbol_id) do
+  UserProfile.remove_symbol_from_user(user_provider_id, symbol_id)
+
   end
 end

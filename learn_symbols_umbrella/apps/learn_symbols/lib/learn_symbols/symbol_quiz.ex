@@ -19,34 +19,41 @@ defmodule LearnSymbols.SymbolQuiz do
 
 
   def answer(user_id, symbol_id, :yes) do
-    with persisted_symbol <- Symbol.get_with_profile(symbol_id, user_id),
-         {:ok, _} <- check_symbol_belongs_to_user(persisted_symbol, user_id) do
-      persisted_symbol
-      |> Ecto.Changeset.change(
-           %{
-             correct_answers: persisted_symbol.correct_answers + 1,
-             next_show: DateTime.add(persisted_symbol.next_show, 60 * 60)
-           }
-         )
-      |> Repo.update()
-    else
-      err -> err
-    end
+    get_and_check_symbol(user_id, symbol_id, &answer_question_yes/1)
   end
 
   def answer(user_id, symbol_id, :no) do
-    with persisted_symbol <- Symbol.get_with_profile(symbol_id, user_id),
+    get_and_check_symbol(user_id, symbol_id, &answer_question_no/1)
+  end
+
+  defp answer_question_yes(symbol) do
+    symbol
+    |> Ecto.Changeset.change(
+         %{
+           correct_answers: symbol.correct_answers + 1,
+           next_show: DateTime.add(symbol.next_show, 60 * 60)
+         }
+       )
+    |> Repo.update()
+  end
+
+  defp answer_question_no(symbol) do
+    symbol
+    |> Ecto.Changeset.change(
+         %{
+           correct_answers: 0,
+           next_show: DateTime.add(symbol.next_show, 30)
+         }
+       )
+    |> Repo.update()
+  end
+
+  defp get_and_check_symbol(user_id, symbol_id, action_to_apply) do
+    with {:ok, persisted_symbol} <- Symbol.get_with_profile(symbol_id),
          {:ok, _} <- check_symbol_belongs_to_user(persisted_symbol, user_id) do
-      persisted_symbol
-      |> Ecto.Changeset.change(
-           %{
-             correct_answers: persisted_symbol.correct_answers + 1,
-             next_show: DateTime.add(persisted_symbol.next_show, 30)
-           }
-         )
-      |> Repo.update()
-    else
-      err -> err
+      action_to_apply.(persisted_symbol)
+      else
+      err->err
     end
   end
 
