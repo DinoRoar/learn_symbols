@@ -23,7 +23,7 @@ defmodule LearnSymbols.MixProject do
   def application do
     [
       mod: {LearnSymbols.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :httpotion]
     ]
   end
 
@@ -36,6 +36,7 @@ defmodule LearnSymbols.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:text_to_speech, in_umbrella: true},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:jason, "~> 1.0"},

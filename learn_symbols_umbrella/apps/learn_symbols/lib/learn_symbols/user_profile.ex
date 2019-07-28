@@ -35,7 +35,7 @@ defmodule LearnSymbols.UserProfile do
              |> Repo.get_by(provider_id: provider_id)
              |> Repo.preload([:symbols])
 
-    Logger.debug "Getting user by provider id: #{Poison.encode!(result)}"
+    # Logger.debug "Getting user by provider id: #{Poison.encode!(result)}"
     result
   end
 

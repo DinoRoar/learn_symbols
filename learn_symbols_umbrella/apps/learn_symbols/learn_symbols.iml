@@ -32,5 +32,10 @@
     <orderEntry type="library" name="exjsx" level="project" />
     <orderEntry type="library" name="json" level="project" />
     <orderEntry type="library" name="jazz" level="project" />
+    <orderEntry type="library" name="httpotion" level="project" />
+    <orderEntry type="library" name="ibrowse" level="project" />
+    <orderEntry type="module" module-name="text_to_speech" />
+    <orderEntry type="module" module-name="text_to_speech" />
+    <orderEntry type="module" module-name="text_to_speech" />
   </component>
 </module>
